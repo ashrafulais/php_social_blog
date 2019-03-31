@@ -334,7 +334,7 @@ function update_information($table_name, $columns=[], $values=[], $chngattr, $pi
 	}
 }
 
-function update_file($prev_img_url, $target_dir, $upload_limit) {
+function update_file($prev_img_url, $target_dir, $upload_limit=5100000) {
 //delete the prev image if exists and make a new image file and upload that
 $uploadOk = 1;
 	if(file_exists($prev_img_url)) {
@@ -436,9 +436,47 @@ if( isset($_POST['update_comment_button']) ) {
 Update profile button from EDIT_BRO
 ---------------------------------------------*/
 
+if( isset($_POST['update_profile_btn']) ) {
+	$table_name = "user_details";
+	$what_row = "user_id";
+	$which_profile = $_SESSION['user_id'];
 
-if( isset($_POST['update_profile_info']) ) {
-	update_information($table_name, $attributes, $attribute_values);
+	// $firstname = sanitize_name($_POST['firstname']);
+	// $lastname = sanitize_name($_POST['lastname']);
+	$jobrole = sanitize_name($_POST['job_role']);
+	$birthdate = strtotime($_POST['birthdate']);
+	$about_user = addslashes($_POST['about_user']);
+
+	$target_dir = "post_images/";
+	$target_img_for_post = $_FILES["fileToUpload"]["name"];
+	$prev_img_url = addslashes($_POST['prev_profile_pic']) ?? "";
+
+	if(strlen($about_user)<201) {
+		
+		//when the data meets the requirements
+		if($target_img_for_post != "") {
+			$img_upload_status = update_file($prev_img_url, $target_dir);
+			//get the pro pic url
+			$profile_picture = $upload_img_url;
+
+
+		}
+		//Header("Location: success.php?m=$profile_picture");
+		if($img_upload_status==1 || file_exists($profile_picture)) {
+		
+			$attributes = ['user_job_title', 'user_birthdate', 'about_user', 'user_profile_img_url'];
+			$attribute_values = [$jobrole, $birthdate, $about_user, $profile_picture];
+
+			$status = update_information($table_name, $attributes, $attribute_values, $what_row, $which_profile);
+			if($status) echo "Profile updated";
+			else echo "Error occurred";
+		
+		}
+	}
+	else {
+		echo "Check again";
+	}
+	
 }
 
 /*---------------------------------------------
@@ -455,6 +493,36 @@ if( isset($_POST['push_comment_button']) ) {
 
 }
 
+/*---------------------------------------------
+Comment Delete operation
+---------------------------------------------*/
+if( isset($_POST['delete_comment_confirm']) ) {
+	$user_id = sanitize_number($_SESSION['user_id']);
+	$cmnt_id = sanitize_number($_POST['comment_id']);
+
+	$cmnt_delete_query = "DELETE FROM post_comments WHERE user_id=$user_id AND comment_id=$cmnt_id";
+
+	if ($GLOBALS['conn']->query($cmnt_delete_query) === TRUE) {
+		echo "Comment deleted successfully";
+	} else {
+		echo "Error deleting Comment ";
+	}
+}
+/*---------------------------------------------
+Post Delete operation
+---------------------------------------------*/
+if( isset($_POST['delete_post_confirm']) ) {
+	$user_id = sanitize_number($_SESSION['user_id']);
+	$post_id = sanitize_number($_POST['post_id']);
+
+	$post_delete_query = "DELETE FROM all_posts WHERE user_id=$user_id AND post_id=$post_id";
+
+	if ($GLOBALS['conn']->query($post_delete_query) === TRUE) {
+		echo "Post deleted successfully";
+	} else {
+		echo "Error deleting post ";
+	}
+}
 
 //$conn->close();
 ?>

@@ -41,7 +41,7 @@ Posts will be shown here now
       $page_id = filter_input(INPUT_GET, 'show_post_page', FILTER_SANITIZE_NUMBER_INT) ?? 1;
 
       $total_rows = get_posts()->num_rows;
-      $posts_per_page = 2;
+      $posts_per_page = 8;
       $numof_pages = intval( $total_rows / $posts_per_page );
       $numof_pages += ($total_rows%$posts_per_page) !=0 ? 1 : 0;
 

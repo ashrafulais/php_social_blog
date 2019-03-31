@@ -38,13 +38,18 @@ $total_posts = get_posts(-1, -1, $user_id)->num_rows;
   
   <div class="profile-card js-profile-card">
     <div class="profile-card__img">
-      <img src="https://fboverlays.com/pages/assets/frontend/img/previewImage.png" alt="profile card">
+      <img src=<?php
+      $default = "https://fboverlays.com/pages/assets/frontend/img/previewImage.png";
+      if($profile_data['user_profile_img_url'] != '')
+        $default = $profile_data['user_profile_img_url'];
+      echo $default;
+      ?> alt="profile card">
     </div>
 
     <div class="profile-card__cnt js-profile-cnt">
       <div class="profile-card__name"> <?php echo $profile_data['user_firstname']." ".$profile_data['user_lastname']; ?></div>
       
-      <div class="profile-card__txt"><?php echo $profile_data['user_job_title']; ?> from <strong> Internet ;) </strong></div>
+      <div class="profile-card__txt"><?php echo $profile_data['user_job_title']?? "None"; ?> </div>
       <div class="profile-card-loc">
         <span class="profile-card-loc__icon">
           <svg class="icon"><use xlink:href="#icon-location"></use></svg>
@@ -53,7 +58,10 @@ $total_posts = get_posts(-1, -1, $user_id)->num_rows;
         <span class="profile-card-loc__txt">
           City, Country
         </span>
+
       </div>
+      
+      <div class="profile-card__txt"><?php echo $profile_data['about_user']; ?> </div>
 
       <div class="profile-card-inf">
 

@@ -91,7 +91,7 @@ while($data = $comment_data->fetch_array()):
 ?>
         <!-- Single Comment -->
         <div class="media mb-4">
-          <img class="d-flex mr-3 rounded-circle" src="<?php echo $profile_img; ?>" alt="">
+          <img class="d-flex mr-3 rounded-circle" src="<?php echo $profile_img; ?>" alt="" width="100px" >
           <div class="media-body">
             <h5 class="mt-0"><?php echo $data['user_firstname']." ".$data['user_lastname']; ?> 
           
@@ -106,7 +106,8 @@ while($data = $comment_data->fetch_array()):
               <a class="dropdown-item" href="edit_bro.php?edit_comment_id=<?php 
               echo $data['comment_id']; ?> ">Edit</a>
 
-              <a class="dropdown-item" href="#">Delete</a>
+              <a class="dropdown-item" href="edit_bro.php?delete_comment_id=<?php 
+              echo $data['comment_id']; ?> ">Delete</a>
             </div>
           </div>
 

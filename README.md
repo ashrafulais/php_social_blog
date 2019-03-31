@@ -1,2 +1,2 @@
-# php_social_blog
-This is social blog made in php
+# Social Blog by PHP
+This is my first php blog application.

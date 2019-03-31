@@ -76,7 +76,7 @@ include('include/header.php');
     $uid = $_SESSION['user_id'];
 
     $total_rows = get_posts(-1, -1, $uid)->num_rows;
-    $posts_per_page = 2;
+    $posts_per_page = 8;
     $numof_pages = intval( $total_rows / $posts_per_page );
     $numof_pages += ($total_rows%$posts_per_page) !=0 ? 1 : 0;
 
@@ -103,7 +103,10 @@ include('include/header.php');
           <a href="single_post.php?show_post=<?php echo $post['post_id']; ?>" target="_blank" class="btn btn-primary">Find Out More!</a>
 
           <a href="edit_bro.php?edit_post_id=<?php echo $post['post_id']; ?>" class="btn btn-info "> <i class="far fa-edit"></i> </a>
-          <a href="#" class="btn btn-danger"> <i class="far fa-trash-alt"></i> </a>
+
+          <a href="edit_bro.php?delete_post_id=<?php echo $post['post_id']; ?>" class="btn btn-warning "> <i class="far fa-trash-alt"></i> </a>
+
+
         </div>
       </div>
     </div>
